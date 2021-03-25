@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,13 +27,15 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
     ListView listview;
     PlaneteAdapter adapter;
-    Button verifier = null;
+    Button verifier;
+    Data data = new Data();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifier = (Button)findViewById(R.id.btnVerify);
+        verifier.setEnabled(false);
 
         instance = this;
 
@@ -43,7 +46,36 @@ public class MainActivity extends AppCompatActivity {
         listview.setAdapter(PAdapter);
 
 
+        View.OnClickListener verifierListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                int score = 0;
+                String[] taillePlanete = data.getTaillePlanetes();
+                for(int i = 0; i < taillePlanete.length; i++)
+                {
+                    View v = listview.getChildAt(i);
+                    Spinner spinner = (Spinner) v.findViewById(R.id.spinner);
+
+                    TextView textView = v.findViewById(R.id.textView);
+
+                    if (spinner.getSelectedItem().toString().equals(taillePlanete[i]))
+                    {
+                        score++;
+                    }
+                }
+
+                Toast.makeText(MainActivity.this,"Vous avez trouvé la taille de : " + score + " planètes sur " +
+                        taillePlanete.length, Toast.LENGTH_LONG).show();
+            }
+
+        };
+
+        verifier.setOnClickListener(verifierListener);
+
     }
+
+
 
     public static MainActivity getInstance() {
         return instance;

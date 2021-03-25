@@ -11,26 +11,30 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlaneteAdapter extends BaseAdapter {
 
     private final ArrayList<String> planetes;
     private MainActivity MainActivity;
     Data data = new Data();
-    Button verifier = null;
+    Button verifier;
+    private int nbSpin = 0;
+
 
     public PlaneteAdapter(Button verifier) {
 
         planetes = data.getListePlanetes();
         MainActivity = MainActivity.getInstance();
-        verifier = this.verifier;
-        verifier.setOnClickListener(verifierListener);
+        this.verifier = verifier;
 
     }
 
@@ -79,31 +83,34 @@ public class PlaneteAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 CheckBox checkBox = (CheckBox) compoundButton.findViewById(R.id.checkbox);
-                spinner.setEnabled(!checkBox.isChecked());
-                spinadapter.notifyDataSetChanged();
+
+                if (checkBox.isChecked()) {
+                    spinner.setEnabled(false);
+                    spinadapter.notifyDataSetChanged();
+                    nbSpin++;
+                } else {
+                    spinner.setEnabled(true);
+                    spinadapter.notifyDataSetChanged();
+                    nbSpin--;
+                }
+
+                if(nbSpin == data.getTaillePlanetes().length)
+                {
+                    verifier.setEnabled(true);
+                }
+
+                else
+                {
+                    verifier.setEnabled(false);
+                }
             }
 
-            public void onCheckboxStatus ()
-            {
-                
-            }
         });
 
 
         return itemView;
     }
 
-    private View.OnClickListener verifierListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-
-
-
-
-
-        }
-    };
 
 
 }
