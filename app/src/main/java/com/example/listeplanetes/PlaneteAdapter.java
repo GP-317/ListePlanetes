@@ -5,44 +5,50 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class PlaneteAdapter extends BaseAdapter {
 
-    private ArrayList<String> planetes;
+    private final ArrayList<String> planetes;
     private MainActivity MainActivity;
+    Data data = new Data();
+    Button verifier = null;
 
-    public PlaneteAdapter(MainActivity MainActivity)
-    {
+    public PlaneteAdapter(Button verifier) {
 
-    }
-
-    public PlaneteAdapter() {
+        planetes = data.getListePlanetes();
+        MainActivity = MainActivity.getInstance();
+        verifier = this.verifier;
+        verifier.setOnClickListener(verifierListener);
 
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return planetes.size();
     }
 
     @Override
-    public Object getItem(int arg0) {
+    public Object getItem(int arg0)
+    {
         return planetes.get(arg0);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return 0;
     }
 
@@ -61,30 +67,43 @@ public class PlaneteAdapter extends BaseAdapter {
 
         nomPlanete.setText(planetes.get(position));
 
-        String[] taillePlanetes = {"4900", "12000", "12800", "6800", "144000", "120000", "52000", "50000", "2300"};
+
+        String[] taillePlanetes = data.getTaillePlanetes();
+
         final ArrayAdapter<String> spinadapter = new ArrayAdapter<String>(MainActivity, android.R.layout.simple_spinner_item, taillePlanetes);
         spinadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinadapter);
 
 
-
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                CheckBox checkBox = (CheckBox)  compoundButton.findViewById(R.id.checkbox);
-                if (checkBox.isChecked()) {
-                    spinner.setEnabled(false);
-                    spinadapter.notifyDataSetChanged();
-                } else {
-                    spinner.setEnabled(true);
-                    spinadapter.notifyDataSetChanged();
-                }
+                CheckBox checkBox = (CheckBox) compoundButton.findViewById(R.id.checkbox);
+                spinner.setEnabled(!checkBox.isChecked());
+                spinadapter.notifyDataSetChanged();
+            }
+
+            public void onCheckboxStatus ()
+            {
+                
             }
         });
 
 
         return itemView;
     }
+
+    private View.OnClickListener verifierListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+
+
+
+
+        }
+    };
 
 
 }

@@ -10,4 +10,11 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btnVerify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Vérifier" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
